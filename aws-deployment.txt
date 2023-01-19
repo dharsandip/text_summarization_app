@@ -1,0 +1,50 @@
+
+      Steps for deploying ML app on AWS ECS:
+
+
+1. First install AWS CLI (Command Line Interface) and do "aws configure"  
+2. Logon to AWS and go to ECR (Elastic Container Registry)
+3. Create a Private/Public Repository in ECR
+4. After Creating repository, go to View Push Commands. It will show us the Push commands for our App
+5. We have to make sure that we have the latest version of the AWS CLI (Command Line Interface) and Docker installed on our laptop or machine.
+
+We have to use the following steps in AWS CLI to authenticate and push a docker image to our repository on AWS:
+
+a. Retrieve an authentication token and authenticate your Docker client to your registry.
+Use the AWS CLI:
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 832088263456.dkr.ecr.us-east-1.amazonaws.com
+
+b. Build your Docker image using the following command:
+
+docker build -t text-summarization-app .
+After the build completes, tag your image so we can push the image to this repository:
+
+c. docker tag text-summarization-app:latest 832088263456.dkr.ecr.us-east-1.amazonaws.com/text-summarization-app:latest
+
+d. Run the following command to push this image to your newly created AWS repository:
+
+docker push 832088263456.dkr.ecr.us-east-1.amazonaws.com/text-summarization-app:latest
+
+
+6. Go to AWS ECR and click on your Repository and you will see the image (text-summarization-app). Copy the image URI path.
+
+7. Now we need to create ECS Cluster. Go to ECS and click on Clusters. Create a EC2 LInux Cluster. Specify cluster name, ec2 instance type,  keep other things as default and create it.
+
+8. View the cluster. 
+9. Go to Task Definitions under Amazon ECS and click on Create New Task Definition. Choose EC2 and specify a name. Specify Task Memory and Task CPU and then add the Container (specify container name and also the container image location). Specify Port mapping (80 and 8501). Keep everything else as default and click on Add.
+Container will be added. Click on Create to create the Task. We have just created a task definition.
+
+10. Now, go to Clusters and click on your Cluster and go to Tasks. Click on Run new task. Choose EC2 as launch type. Keep everything else as default and click on Run Task. The task is running
+11. Go to EC2 Dashboard. Click on instances(running). Click on Instance ID and you will see the instance state as running.
+
+12. Click on open address in Public IPv4 DNS and it will take you to the the link where app is running. By default it will try to launch the app page with https://. Please change it to http://  
+
+
+
+
+
+
+
+
+7. 
